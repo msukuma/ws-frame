@@ -381,36 +381,5 @@ describe('Frame', function () {
           () => assert(frame.payloadLength === 0));
       });
     });
-
-    describe('Class functions', () => {
-      let payloadBuf;
-      let maskedPayloadBuf;
-      const maskingKey = Buffer.allocUnsafe(32);
-
-      beforeEach(() => payloadBuf = Buffer.from(payload));
-
-      describe('maskPayload', () => {
-        it('is defined', () => assert(Frame.maskPayload instanceof Function));
-
-        it('masks Payload', () => {
-          Frame.maskPayload(payloadBuf, maskingKey);
-          maskedPayloadBuf = payloadBuf;
-          assert(payloadBuf.toString() !== payload);
-        });
-
-        it('masks a frame\'s payload', () => {
-          frame = completeFrame(0);
-        });
-      });
-
-      describe('unMaskPayload', () => {
-        it('is defined', () => assert(Frame.unMaskPayload instanceof Function));
-
-        it('unmasks Payload', () => {
-          Frame.unMaskPayload(maskedPayloadBuf, maskingKey);
-          assert(payloadBuf.compare(maskedPayloadBuf) === 0);
-        });
-      });
-    });
   });
 });

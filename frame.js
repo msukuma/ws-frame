@@ -204,14 +204,4 @@ class Frame {
 
 defineFrameOGetterSetters(Frame.prototype);
 
-Frame.maskPayload = Frame.unMaskPayload = (payload, maskingKey) => {
-  if (payload instanceof Frame) {
-    if (frame.mask)
-      maskPayload(frame.payload, frame.maskingKey);
-  }
-  else {
-    maskPayload(payload, maskingKey);
-  }
-};
-
 module.exports = Frame;
