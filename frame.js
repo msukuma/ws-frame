@@ -123,7 +123,11 @@ class Frame {
       );
 
       setMaskBit(this, 0);
-      unMaskPayload(this.payload, maskingKey);
+
+      if (isMasked(this)) {
+        unMaskPayload(this.payload, maskingKey);
+        setMasked(this, false);
+      }
     }
 
     return maskingKey;
@@ -133,20 +137,21 @@ class Frame {
     if (!this.payloadLength)
       return null;
 
-    if (this.mask && isMasked(this)) {
+    const _payload = this.buffer.slice(payloadOffset(this));
 
+    if (this.mask && isMasked(this)) {
+      unMaskPayload(_payload, this.maskingKey);
+      setMasked(this, false);
     }
 
-    return this.buffer.slice(payloadOffset(this));
+    return _payload;
   }
 
   set payload(val) {
     validations.payload({ payload: val });
 
     const buffers = [this.buffer.slice(0, 2)];
-    const newPayloadBuf = val instanceof Buffer ?
-                            val :
-                            Buffer.from(val);
+    const newPayloadBuf = val instanceof Buffer ? val : Buffer.from(val);
     const extPayloadLengthBuf = makePayloadLengthBuf(
       this.buffer,
       1,
@@ -158,11 +163,11 @@ class Frame {
 
     if (this.mask) {
       maskPayload(newPayloadBuf, this.maskingKey);
+      setMasked(this, true);
       buffers.push(this.maskingKey);
     }
 
     buffers.push(newPayloadBuf);
-
     setBuffer(this, Buffer.concat(buffers));
   }
 
@@ -179,6 +184,7 @@ class Frame {
       if (maskingKey) {
         buffers.push(maskingKey);
         unMaskPayload(payload, maskingKey);
+        setMasked(this, false);
       }
 
       setBuffer(this, Buffer.concat(buffers));

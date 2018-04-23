@@ -273,20 +273,24 @@ describe('Frame', function () {
         frame = completeFrame(1);
       });
 
-      beforeEach(() =>
-        newLoad = Buffer.from('this should change the payloadLength'));
-
       itExists('payload');
 
       describe('getter', () => {
+        it('returns null if payload was not set',
+          () => assert(_payloadLessFrame.payload === null));
+
         it('returns a buffer if payload exists',
           () => assert(frame.payload instanceof Buffer));
 
-        it('returns null if payload was not set',
-          () => assert(_payloadLessFrame.payload === null));
+        it('return an unmaked payload', () => {
+          assert(frame.payload.compare(payloadBuf) === 0);
+        });
       });
 
       describe('setter', () => {
+        beforeEach(() =>
+          newLoad = Buffer.from('this should change the payloadLength'));
+
         it('validates input is a string or buffer', () => {
           assert.throws(
             () => frame.payload = 3,
@@ -304,15 +308,15 @@ describe('Frame', function () {
           () => assert(_payloadLessFrame.payloadLength === newLoad.length));
 
         it('replaces the existing payload', () => {
+          const newLoadCopy = Buffer.allocUnsafe(newLoad.length);
+          newLoad.copy(newLoadCopy);
           frame.payload = newLoad;
-          assert(frame.payload.compare(newLoad) === 0);
+          assert(frame.payload.compare(newLoadCopy) === 0);
         });
 
         it('masks the payload if mask is set', () => {
-          const payload = frame.payload;
-          unMaskPayload(frame.payload, frame.maskingKey);
-
-          assert(payload.compare(newLoad) === 0);
+          frame.payload = newLoad;
+          assert(frame.payload.compare(newLoad) !== 0);
         });
       });
     });
