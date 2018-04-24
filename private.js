@@ -113,7 +113,7 @@ function makeFrameBuffer(args) {
 
   if (payloadBuf) {
     if (maskingKeyBuf)
-      maskPayload(payloadBuf, maskingKeyBuf);
+      mask(payloadBuf, maskingKeyBuf);
 
     buffers.push(payloadBuf);
   }
@@ -151,10 +151,15 @@ function tmpPayloadLength(ctx) {
   return ctx.buffer.length - payloadOffset(ctx);
 }
 
-function maskPayload(payload, maskingKey) {
-  for (let i = 0; i < payload.length; i++) {
+function mask(payload, maskingKey, ctx) {
+  for (let i = 0; i < payload.length; i++)
     payload[i] = payload[i] ^ maskingKey[i % 4];
-  }
+  if (ctx) setMasked(ctx, true);
+}
+
+function unMask(payload, maskingKey, ctx) {
+  mask(payload, maskingKey);
+  if (ctx) setMasked(ctx, false);
 }
 
 function setMaskBit(ctx, val) {
@@ -180,7 +185,7 @@ module.exports = {
   payloadOffset: payloadOffset,
   tmpPayloadLength: tmpPayloadLength,
   makePayloadLengthBuf: makePayloadLengthBuf,
-  maskPayload: maskPayload,
-  unMaskPayload: maskPayload,
+  mask: mask,
+  unMask: unMask,
   setMaskBit: setMaskBit,
 };

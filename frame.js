@@ -16,8 +16,8 @@ const {
   tmpPayloadLength,
   payloadOffset,
   maskingKeyOffset,
-  maskPayload,
-  unMaskPayload,
+  mask,
+  unMask,
   makePayloadLengthBuf,
   setMaskBit,
   unMasked,
@@ -31,12 +31,14 @@ class Frame {
   constructor(args) {
     validate(args);
 
+    const buffer = args instanceof Buffer ? args : makeFrameBuffer(args);
     setPrivates(
       this,
-      { buffer: args instanceof Buffer ? args : makeFrameBuffer(args) }
+      {
+        buffer: buffer,
+        masked: buffer[1] & flags.mask ? true : false,
+      }
     );
-
-    setMasked(this, Boolean(this.mask));
   }
 
   get buffer() {
@@ -90,7 +92,7 @@ class Frame {
       );
 
       if (payload)
-        maskPayload(payload, newMaskingKey);
+        mask(payload, newMaskingKey, this);
 
     }
     else {
@@ -124,10 +126,8 @@ class Frame {
 
       setMaskBit(this, 0);
 
-      if (isMasked(this)) {
-        unMaskPayload(this.payload, maskingKey);
-        setMasked(this, false);
-      }
+      if (isMasked(this))
+        unMask(this.payload, maskingKey, this);
     }
 
     return maskingKey;
@@ -139,10 +139,8 @@ class Frame {
 
     const _payload = this.buffer.slice(payloadOffset(this));
 
-    if (this.mask && isMasked(this)) {
-      unMaskPayload(_payload, this.maskingKey);
-      setMasked(this, false);
-    }
+    if (this.mask && isMasked(this))
+      unMask(_payload, this.maskingKey, this);
 
     return _payload;
   }
@@ -162,8 +160,7 @@ class Frame {
       buffers.push(extPayloadLengthBuf);
 
     if (this.mask) {
-      maskPayload(newPayloadBuf, this.maskingKey);
-      setMasked(this, true);
+      mask(newPayloadBuf, this.maskingKey, this);
       buffers.push(this.maskingKey);
     }
 
@@ -183,8 +180,7 @@ class Frame {
       maskingKey = this.maskingKey;
       if (maskingKey) {
         buffers.push(maskingKey);
-        unMaskPayload(payload, maskingKey);
-        setMasked(this, false);
+        unMask(payload, maskingKey, this);
       }
 
       setBuffer(this, Buffer.concat(buffers));

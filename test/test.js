@@ -16,8 +16,8 @@ const {
  } = require('./helpers');
 
 const {
-  maskPayload,
-  unMaskPayload,
+  mask,
+  unMask,
 } = require('../private');
 
 const assert = require('assert');
@@ -373,7 +373,7 @@ describe('Frame', function () {
         it('returns a buffer', () => assert(after instanceof Buffer));
 
         it('returns the frame\'s unmasked payload if it exists', () => {
-          unMaskPayload(b4, frame.maskingKey);
+          unMask(b4, frame.maskingKey);
           assert(after.compare(b4) === 0);
         });
 
