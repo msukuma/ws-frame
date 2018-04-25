@@ -20,7 +20,6 @@ const {
   unMask,
   makePayloadLengthBuf,
   setMaskBit,
-  unMasked,
 } = require('./private');
 
 const { Uint64BE } = require('int64-buffer');
@@ -201,6 +200,26 @@ class Frame {
 
   isComplete() {
     return tmpPayloadLength(this) >= this.payloadLength;
+  }
+
+  toString() {
+    const wasMasked = isMasked(this);
+    const string =  `Frame {
+      fin: ${this.fin},
+      rsv1: ${this.rsv1},
+      rsv2: ${this.rsv2},
+      rsv3: ${this.rsv3},
+      opcode: ${this.opcode},
+      mask: ${this.mask},
+      maskingKey: ${this.maskingKey},
+      payloadLength: ${this.payloadLength},
+      payload: ${this.payload.toString()}
+    }`;
+
+    if (wasMasked)
+      mask(this.payload, this.maskingKey, this);
+
+    return string;
   }
 }
 
