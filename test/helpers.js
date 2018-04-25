@@ -25,7 +25,7 @@ exports.completeFrame = (mask, size = testFrameSize) => {
   const args = { payload: makePayload(size) };
 
   if (mask)
-    args.maskingKey = Buffer.allocUnsafe(4);
+    args.maskingKey = Buffer.from('mask');
 
   return new Frame(makeFrameBuffer(args));
 };
