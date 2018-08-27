@@ -27,12 +27,13 @@ function bitPropsetter(prop, i) {
   };
 }
 
-exports.clear = clear;
-
-exports.defineFrameOGetterSetters = function (obj) {
-  frame0Props.forEach((key, i) => Object.defineProperty(
-    obj,
-    key,
-    { get: bitPropGetter(key), set: bitPropsetter(key, i) }
-  ));
+module.exports = {
+  clear,
+  defineFrameOGetterSetters: function (obj) {
+    frame0Props.forEach((key, i) => Object.defineProperty(
+      obj,
+      key,
+      { get: bitPropGetter(key), set: bitPropsetter(key, i) }
+    ));
+  },
 };
