@@ -9,6 +9,23 @@ const maskingKey = 'maskingKey';
 const payload = 'payload!';
 const string = 'string';
 
+const flags =  {
+  fin: 0x80,
+  rsv1: 0x40,
+  rsv2: 0x20,
+  rsv3: 0x10,
+  opcode: 0xf,
+  mask: 0x80,
+  payloadLength: 0x7f,
+};
+
+const bitProps =  [
+  fin,
+  rsv1,
+  rsv2,
+  rsv3,
+];
+
 const constants = {
   fin,
   rsv1,
@@ -28,25 +45,9 @@ const constants = {
   uInt16Max: 65535,
   testFrameSize: 8,
 
-  flags: {
-    fin: 0x80,
-    rsv1: 0x40,
-    rsv2: 0x20,
-    rsv3: 0x10,
-    opcode: 0xf,
-    mask: 0x80,
-    payloadLength: 0x7f,
-  },
-
-  bitProps: [
-    fin,
-    rsv1,
-    rsv2,
-    rsv3,
-  ],
-
+  flags,
+  bitProps,
+  frame0Props: bitProps.concat([opcode]),
 };
-
-constants.frame0Props = constants.bitProps.concat([opcode]);
 
 module.exports = constants;
