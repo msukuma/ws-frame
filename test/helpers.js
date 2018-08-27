@@ -16,25 +16,28 @@ function makePayload(size) {
   return buf;
 }
 
-exports.itExists = prop => it('exists', () =>
-        assert(Frame.prototype.hasOwnProperty(prop)));
+module.exports = {
+  makePayload,
 
-exports.makePayload = makePayload;
+  itExists: prop => it('exists', () => {
+    assert(Frame.prototype.hasOwnProperty(prop));
+  }),
 
-exports.completeFrame = (mask, size = testFrameSize) => {
-  const args = { payload: makePayload(size) };
+  completeFrame: (mask, size = testFrameSize) => {
+    const args = { payload: makePayload(size) };
 
-  if (mask)
-    args.maskingKey = Buffer.from('mask');
+    if (mask)
+      args.maskingKey = Buffer.from('mask');
 
-  return new Frame(makeFrameBuffer(args));
+    return new Frame(makeFrameBuffer(args));
+  },
+
+  payloadLessFrame: () => new Frame(makeFrameBuffer({})),
+
+  incompleteFrame: size => new Frame(Buffer.concat([
+    Buffer.from([0x81, 0xff]),
+    new Uint64BE(size).toBuffer(),
+    Buffer.allocUnsafe(32),
+    Buffer.from('incomplete frame...'),
+  ])),
 };
-
-exports.payloadLessFrame = () => new Frame(makeFrameBuffer({}));
-
-exports.incompleteFrame = size => new Frame(Buffer.concat([
-  Buffer.from([0x81, 0xff]),
-  new Uint64BE(size).toBuffer(),
-  Buffer.allocUnsafe(32),
-  Buffer.from('incomplete frame...'),
-]));
