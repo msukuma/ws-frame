@@ -10,17 +10,17 @@ const payload = 'payload!';
 const string = 'string';
 
 const constants = {
-  fin: fin,
-  rsv1: rsv1,
-  rsv2: rsv2,
-  rsv3: rsv3,
-  opcode: opcode,
-  mask: mask,
-  payloadLength: payloadLength,
-  maskingKey: maskingKey,
-  payload: payload,
+  fin,
+  rsv1,
+  rsv2,
+  rsv3,
+  opcode,
+  mask,
+  payloadLength,
+  maskingKey,
+  payload,
+  string,
 
-  string: string,
   minFrameLength: 2, // fin to payloadLength
   maskingKeyLength: 4,
   minOffset: 2,
