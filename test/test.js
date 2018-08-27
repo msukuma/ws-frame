@@ -331,8 +331,7 @@ describe('Frame', function () {
       describe('removeMaskingKey', () => {
         before(() => b4 = frame.maskingKey);
 
-        it('is defined',
-          () => assert(frame.removeMaskingKey instanceof Function));
+        itExists('removeMaskingKey');
 
         it('removes the frame\'s maskingKey if it exists', () => {
           after = frame.removeMaskingKey();
@@ -362,8 +361,7 @@ describe('Frame', function () {
           b4 = frame.payload;
         });
 
-        it('is defined',
-          () => assert(frame.removePayload instanceof Function));
+        itExists('removePayload');
 
         it('removes the frame\'s payload if it exists', () => {
           after = frame.removePayload();
@@ -391,8 +389,7 @@ describe('Frame', function () {
           b4 = frame.payload;
         });
 
-        it('is defined',
-          () => assert(frame.concat instanceof Function));
+        itExists('concat');
 
         it('accepts a string as an argument', () => {
           assert.doesNotThrow(() => frame.concat('234'));
