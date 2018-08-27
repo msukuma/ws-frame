@@ -384,6 +384,41 @@ describe('Frame', function () {
         it('sets payloadLength bits to 0',
           () => assert(frame.payloadLength === 0));
       });
+
+      describe('concat', () => {
+        before(() => {
+          frame = completeFrame(1);
+          b4 = frame.payload;
+        });
+
+        it('is defined',
+          () => assert(frame.concat instanceof Function));
+
+        it('accepts a string as an argument', () => {
+          assert.doesNotThrow(() => frame.concat('234'));
+        });
+
+        it('accepts a Buffer as an argument', () => {
+          assert.doesNotThrow(() => frame.concat(Buffer.from('234')));
+        });
+
+        it('validates input is a string or a buffer', () => {
+          assert.throws(
+            () => frame.concat(234),
+            /string or a buffer/
+          );
+        });
+
+        it('combines its input to the frames payload', () => {
+          const suf = 'new end';
+          const expected = `${payload}${suf}`;
+          frame = completeFrame(1);
+
+          frame.concat(Buffer.from(suf));
+          after = frame.payload;
+          assert(after.toString() === expected);
+        });
+      });
     });
   });
 });

@@ -188,6 +188,16 @@ class Frame {
     return payload;
   }
 
+  concat(buf) {
+    validations.payload({ payload: buf });
+
+    if (typeof buf === 'string')
+      buf = Buffer.from(buf);
+
+    const totLen = this.payloadLength + buf.length;
+    this.payload = Buffer.concat([this.payload, buf], totLen);
+  }
+
   isValid() {
     try {
       validate(this.buffer);
