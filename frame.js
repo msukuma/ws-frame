@@ -198,6 +198,10 @@ class Frame {
     this.payload = Buffer.concat([this.payload, buf], totLen);
   }
 
+  toBuffer() {
+    return getBuffer(this);
+  }
+
   isValid() {
     try {
       validate(this.buffer);
@@ -206,10 +210,6 @@ class Frame {
     }
 
     return tmpPayloadLength(this) === this.payloadLength;
-  }
-
-  isComplete() {
-    return tmpPayloadLength(this) >= this.payloadLength;
   }
 
   toString() {
