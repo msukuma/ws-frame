@@ -95,15 +95,6 @@ describe('Frame', function () {
   describe('properties', () => {
     let frame;
 
-    describe('buffer', () => {
-      before(() => frame = completeFrame(0));
-
-      itExists('buffer');
-
-      it('returns the frame object as a buffer',
-        () => assert(frame.buffer instanceof Buffer));
-    });
-
     frame0Props.forEach((prop, i) => {
       describe(prop, () => {
 
@@ -415,6 +406,15 @@ describe('Frame', function () {
           after = frame.payload;
           assert(after.toString() === expected);
         });
+      });
+
+      describe('toBuffer', () => {
+        before(() => frame = completeFrame(0));
+
+        itExists('buffer');
+
+        it('returns the frame object as a buffer',
+          () => assert(frame.toBuffer() instanceof Buffer));
       });
     });
   });

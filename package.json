@@ -22,6 +22,7 @@
   "homepage": "https://github.com/msukuma/websocket-frame#readme",
   "dependencies": {
     "int64-buffer": "^0.1.10",
+    "lodash": "^4.17.10",
     "mocha": "^5.0.1"
   }
 }

@@ -13,10 +13,11 @@ const {
 const { clear } = require('./helpers');
 const { validations } = require('./validations');
 const { Uint64BE } = require('int64-buffer');
+const { isPlainObject } = require('lodash');
 const privates = new WeakMap();
 
 function validate(args) {
-  if (!args)
+  if (!args || (!isPlainObject(args) && !(args instanceof Buffer)))
     throw new TypeError(`args must be a buffer or a plain object`);
 
   if (args instanceof Buffer) {
