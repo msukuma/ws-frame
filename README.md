@@ -1,6 +1,6 @@
 ws-frame
 ==========
-A class used to represent a websocket frame. 
+A class used to represent a websocket frame.
 
 Usage
 ------
@@ -73,30 +73,30 @@ new Frame(options|Buffer)
 ------------
 The Frame constructor accepts an options object(plain object) or a Buffer.
 * options
-  - fin: 0 or 1
-  - rsv1: 0 or 1
-  - rsv2: 0 or 1
-  - rsv3: 0 or 1
-  - mask: 0 or 1
-  - opcode: 0 ... 15 inclusively
-  - maskingKey: String or Buffer
-  - payload: String or Buffer
+  - `fin`: 0 or 1
+  - `rsv1`: 0 or 1
+  - `rsv2`: 0 or 1
+  - `rsv3`: 0 or 1
+  - `mask`: 0 or 1
+  - `opcode`: 0 ... 15 inclusively
+  - `maskingKey`: String or Buffer
+  - `payload`: String or Buffer
 constrictor accepts a plain object or buffer
 
 Frame Properties
 --------------------
 
-|Properties| Setter accepts | Getter returns|
-|--------------------------|
-|`fin`| Number - 0 or 1| Number - 0 or 1 |
-|`rsv1`| Number - 0 or 1| Number - 0 or 1 |
-|`rsv2`| Number - 0 or 1| Number - 0 or 1 |
-|`rsv3`| Number - 0 or 1| Number - 0 or 1 |
-|`mask`| Number - 0 or 1| Number - 0 or 1 |
-|`opcode`| Number - 0 or 15| Number - 0 or 15|
-|`payloadLength`| N/A| Number|
-|`maskingKey`|String or Buffer| Buffer|
-|`payload`|String or Buffer| Buffer|
+Properties| Setter accepts | Getter returns
+----------|----------------|---------------
+`fin`| Number - 0 or 1| Number - 0 or 1
+`rsv1`| Number - 0 or 1| Number - 0 or 1
+`rsv2`| Number - 0 or 1| Number - 0 or 1
+`rsv3`| Number - 0 or 1| Number - 0 or 1
+`mask`| Number - 0 or 1| Number - 0 or 1
+`opcode`| Number - 0 or 15| Number - 0 or 15
+`payloadLength`| N/A| Number
+`maskingKey`|String or Buffer| Buffer
+`payload`|String or Buffer| Buffer
 
 Frame Instance Methods
 ----------------------
